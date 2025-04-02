@@ -237,10 +237,10 @@ if ($filter === 'events' || $filter === 'all') {
     <nav class="bg-white dark:bg-gray-800 shadow-lg mb-6 transition-colors duration-200 nav-item">
         <!-- Add animation classes to navigation elements -->
         <div class="max-w-6xl mx-auto px-4">
-            <div class="flex flex-wrap justify-between items-center py-3">
+            <div class="flex flex-wrap justify-between items-center py-3 space-y-2 sm:space-y-0">
                 <!-- Left Section: Title -->
-                <h1 class="text-2xl font-bold text-gray-800 dark:text-white transition-colors duration-200 flex items-center">
-                    <i class="fas fa-tasks mr-2"></i> My Productivity Dashboard
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white transition-colors duration-200 flex items-center">
+                    <i class="fas fa-tasks mr-2"></i> <span class="hidden sm:inline">My Productivity Dashboard</span>
                 </h1>
 
                 <!-- Middle Section: Welcome Message -->
@@ -251,7 +251,7 @@ if ($filter === 'events' || $filter === 'all') {
                 </div>
 
                 <!-- Right Section: Theme Toggle, Search and Logout -->
-                <div class="flex flex-col md:flex-row items-center space-y-3 md:space-y-0 md:space-x-4 mt-2 sm:mt-0 order-2 md:order-3 w-full md:w-auto">
+                <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-3 md:space-x-4 mt-2 sm:mt-0 order-2 md:order-3 w-full sm:w-auto">
                     <!-- Theme Toggle Button -->
                     <div class="flex items-center space-x-4 w-full md:w-auto justify-center md:justify-start">
                         <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-full p-2 transition-colors duration-200" title="Toggle dark mode">
@@ -267,7 +267,7 @@ if ($filter === 'events' || $filter === 'all') {
                     <!-- Search Form -->
                     <form action="display.php" method="GET" class="flex items-center space-x-2 w-full md:w-auto search-container">
                         <!-- Separate Filter Dropdown -->
-                        <select name="filter" onchange="this.form.submit()" class="py-2 px-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-700" title="Filter your results">
+                        <select name="filter" onchange="this.form.submit()" class="py-1 sm:py-2 px-2 sm:px-3 text-xs sm:text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-700 w-full sm:w-auto" title="Filter your results">
                             <option value="all" <?php echo ($filter === 'all') ? 'selected' : ''; ?>>All</option>
                             <option value="tasks" <?php echo ($filter === 'tasks') ? 'selected' : ''; ?>>Tasks</option>
                             <option value="notes" <?php echo ($filter === 'notes') ? 'selected' : ''; ?>>Notes</option>
@@ -276,7 +276,7 @@ if ($filter === 'events' || $filter === 'all') {
                         
                         <!-- Search Input with Button -->
                         <div class="flex items-center w-full rounded-full overflow-hidden border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 shadow-sm">
-                            <input type="text" name="search" placeholder="Search..." class="w-full px-2 text-sm bg-transparent border-none focus:ring-0 text-gray-800 dark:text-white" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                            <input type="text" name="search" placeholder="Search..." class="w-full px-2 text-xs sm:text-sm bg-transparent border-none focus:ring-0 text-gray-800 dark:text-white" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
                             <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white p-2 focus:outline-none transition-colors duration-200" title="Search">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -294,9 +294,9 @@ if ($filter === 'events' || $filter === 'all') {
     </nav>
 
     <!-- Main Content -->
-    <div class="max-w-6xl mx-auto px-4">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
         <!-- Today's Schedule Gantt Chart -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6 card hover-scale">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-6 card hover-scale">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl font-bold text-gray-800 dark:text-white flex items-center">
                     <i class="far fa-calendar-check mr-2"></i> Schedule for the day
