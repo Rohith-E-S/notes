@@ -188,11 +188,11 @@ if (!$note) {
     <!-- Navigation Bar -->
     <nav class="bg-white dark:bg-gray-800 shadow-lg mb-6 transition-colors duration-200">
         <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <h1 class="text-2xl font-bold text-gray-800 dark:text-white transition-colors duration-200">
+            <div class="flex flex-col md:flex-row justify-between items-center py-4">
+                <h1 class="text-2xl font-bold text-gray-800 dark:text-white transition-colors duration-200 mb-4 md:mb-0">
                     <i class="fas fa-edit mr-2"></i> Edit Note
                 </h1>
-                <div class="flex items-center space-x-6">
+                <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
                     <!-- Welcome Message -->
                     <span class="text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
                         Welcome, <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong>
@@ -207,13 +207,13 @@ if (!$note) {
                         </svg>
                     </button>
                     <a href="display.php" class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-4 py-2 rounded-lg transition-colors duration-200">
-                        <i class="fas fa-arrow-left mr-2"></i> Back to Notes
+                        <i class="fas fa-arrow-left mr-2"></i> Back
                     </a>
                     <!-- Delete Button -->
                     <form action="delete.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this note?');">
                         <input type="hidden" name="note_id" value="<?php echo $note['id']; ?>">
                         <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition" title="Permanently delete this note">
-                            Delete Note
+                            Delete
                         </button>
                     </form>
                 </div>
@@ -223,7 +223,7 @@ if (!$note) {
 
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-10">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 md:p-10">
             <form action="update.php" method="POST" class="space-y-8" enctype="multipart/form-data">
                 <input type="hidden" name="note_id" value="<?php echo $note['id']; ?>">
                 
@@ -233,7 +233,7 @@ if (!$note) {
                            id="title" 
                            name="title" 
                            value="<?php echo htmlspecialchars($note['title']); ?>" 
-                           class="w-full text-5xl font-bold text-gray-800 dark:text-white bg-transparent focus:outline-none focus:ring-0 placeholder-gray-400 dark:placeholder-gray-500 hover:scale-[1.02]" 
+                           class="w-full text-5xl rounded-2xl p-5 font-bold text-gray-800 dark:text-white bg-transparent focus:outline-none focus:ring-0 placeholder-gray-400 dark:placeholder-gray-500 hover:scale-[1.02]" 
                            placeholder="Enter a title..." 
                            required>
                 </div>
@@ -242,7 +242,7 @@ if (!$note) {
                 <div>
                     <textarea id="content" 
                               name="content" 
-                              class="w-full text-xl text-gray-700 dark:text-gray-300 bg-transparent focus:outline-none focus:ring-0 placeholder-gray-400 dark:placeholder-gray-500 leading-relaxed hover:scale-[1.02]" 
+                              class="w-full text-xl rounded-2xl p-6 text-gray-700 dark:text-gray-300 bg-transparent focus:outline-none focus:ring-0 placeholder-gray-400 dark:placeholder-gray-500 leading-relaxed hover:scale-[1.02]" 
                               style="min-height: 600px;" 
                               placeholder="Write your content here..." 
                               required><?php echo htmlspecialchars($note['content']); ?></textarea>
@@ -325,22 +325,22 @@ if (!$note) {
         </div>
     </div>
 
-    <!-- Sidebar - now wider and positioned to start after navbar -->
-    <div class="fixed top-0 right-0 h-full w-20 bg-white dark:bg-gray-800 z-10 flex flex-col items-center" style="padding-top: 6rem;">
+    <!-- Sidebar - now responsive -->
+    <div class="fixed bottom-0 left-0 right-0 md:top-0 md:right-0 md:left-auto md:h-full w-full md:w-20 bg-white dark:bg-gray-800 z-10 flex flex-row md:flex-col items-center justify-around md:justify-start py-3 md:py-0 border-t md:border-t-0 border-gray-200 dark:border-gray-700" style="padding-top: 6rem;">
         <!-- Text-to-Speech Button -->
-        <button id="text-to-speech-btn" type="button" class="sidebar-btn bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-lg transition-colors duration-200 shadow-md mb-4 w-16 flex flex-col items-center" title="Read your note content aloud">
+        <button id="text-to-speech-btn" type="button" class="sidebar-btn bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-lg transition-colors duration-200 shadow-md md:mb-4 w-16 flex flex-col items-center" title="Read your note content aloud">
             <i class="fas fa-volume-up mb-1 text-sm"></i>
             <span class="text-xs">Read</span>
         </button>
         
         <!-- Summarize Button -->
-        <button id="summarize-btn" type="button" class="sidebar-btn bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg transition-colors duration-200 shadow-md mb-4 w-16 flex flex-col items-center" title="Generate a concise summary of your note content">
+        <button id="summarize-btn" type="button" class="sidebar-btn bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg transition-colors duration-200 shadow-md md:mb-4 w-16 flex flex-col items-center" title="Generate a concise summary of your note content">
             <i class="fas fa-robot mb-1 text-sm"></i>
             <span class="text-xs">Summarize</span>
         </button>
         
         <!-- Rewrite Button -->
-        <button id="rewrite-btn" type="button" class="sidebar-btn bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg transition-colors duration-200 shadow-md mb-4 w-16 flex flex-col items-center" title="Rewrite your note content in a different style">
+        <button id="rewrite-btn" type="button" class="sidebar-btn bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg transition-colors duration-200 shadow-md md:mb-4 w-16 flex flex-col items-center" title="Rewrite your note content in a different style">
             <i class="fas fa-sync-alt mb-1 text-sm"></i>
             <span class="text-xs">Rewrite</span>
         </button>
@@ -626,15 +626,17 @@ if (!$note) {
                 const modal = document.createElement('div');
                 modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
                 modal.innerHTML = `
-                    <div class="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-2xl w-full h-[600px] flex flex-col">
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="text-2xl font-bold text-gray-800 dark:text-white">Generated Essay</h3>
                             <button id="close-modal" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white">
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
-                        <div class="prose dark:prose-invert max-w-none">
-                            ${data.essay.replace(/\n/g, '<br>')}
+                        <div class="border border-gray-300 dark:border-gray-600 rounded p-4 overflow-y-auto flex-grow" style="height: 350px;">
+                            <div class="prose dark:prose-invert max-w-none">
+                                ${data.essay.replace(/\n/g, '<br>')}
+                            </div>
                         </div>
                         <div class="mt-6 flex justify-end space-x-2">
                             <button id="replace-with-essay" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg">
@@ -782,8 +784,10 @@ if (!$note) {
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </div>
-                                <div class="prose dark:prose-invert max-w-none">
-                                    ${data.rewritten.replace(/\n/g, '<br>')}
+                                <div class="border border-gray-300 dark:border-gray-600 rounded p-4 overflow-y-auto flex-grow" style="height: 350px;">
+                                    <div class="prose dark:prose-invert max-w-none">
+                                        ${data.rewritten.replace(/\n/g, '<br>')}
+                                    </div>
                                 </div>
                                 <div class="mt-6 flex justify-end space-x-2">
                                     <button id="replace-with-rewrite" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg">
