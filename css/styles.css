@@ -1,0 +1,145 @@
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes ripple {
+    0% { transform: scale(0.8); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+/* Enhanced button animations */
+button, .btn {
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+button:hover, .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+button:active, .btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+button::after, .btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.5s, opacity 0.5s;
+}
+
+button:active::after, .btn:active::after {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+    transition: 0s;
+}
+
+/* Apply animations to elements */
+.nav-item { animation: slideIn 0.5s ease-out; }
+.card { animation: fadeIn 0.6s ease-out; }
+
+/* Smooth transitions */
+.hover-scale { transition: transform 0.2s ease; }
+.hover-scale:hover { transform: scale(1.02); }
+
+/* Status indicators */
+.status-badge {
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite;
+}
+
+/* Search and filter animations */
+.search-container {
+    animation: slideIn 0.5s ease-out;
+    transition: all 0.3s ease;
+}
+.search-container:focus-within {
+    transform: scale(1.02);
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3; /* Standard property for future compatibility */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2; /* Standard property for future compatibility */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Custom dark mode styles */
+.dark body {
+    color: #e2e8f0;
+    background-color: #121212; /* Darker gray background */
+}
+
+/* Fix for text colors in dark mode */
+.dark .dark\:text-white {
+    color: #ffffff !important;
+}
+
+.dark .dark\:text-gray-300 {
+    color: #d1d5db !important;
+}
+
+.dark .dark\:text-gray-400 {
+    color: #9ca3af !important;
+}
+
+/* Background color fixes */
+.dark .dark\:bg-gray-900 {
+    background-color: #121212 !important; /* Override Tailwind's dark bg */
+}
+
+.dark .dark\:bg-gray-800 {
+    background-color: #1e1e1e !important; /* Override for content areas */
+}
+
+.dark .dark\:bg-gray-700 {
+    background-color: #2a2a2a !important; /* Override for cards/items */
+}
+
+.dark .dark\:hover\:bg-gray-600:hover {
+    background-color: #333333 !important; /* Hover state for items */
+}
+
+.dark .dark\:border-gray-600 {
+    border-color: #4b5563 !important;
+}
+
+/* Dark mode transitions */
+body, .dark-transition {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
