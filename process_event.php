@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if ($stmt->execute()) {
         // Redirect to display page
-        header("Location: display.php?filter=events");
+        header("Location: display.php");
         exit();
     } else {
         echo "Error: " . $stmt->error;
