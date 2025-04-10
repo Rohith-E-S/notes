@@ -1,11 +1,9 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+if (session_status() === PHP_SESSION_NONE) session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
-$database = "notesdb"; // Change to your database name
+$database = "notesdb";
 
 // Connect to MySQL
 $conn = new mysqli($servername, $username, $password, $database);
@@ -74,161 +72,51 @@ if ($filter === 'events' || $filter === 'all') {
     <title>Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/chatbot.css">
     <script>
-        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
+        // Function to set theme based on localStorage/preference
+        function setInitialTheme() {
+            const isDark = localStorage.getItem('color-theme') === 'dark' || 
+                         (!('color-theme' in localStorage) && 
+                          window.matchMedia('(prefers-color-scheme: dark)').matches);
+            
+            document.documentElement.classList.toggle('dark', isDark);
+            
+            // Set initial icon visibility
+            const darkIcon = document.getElementById('theme-toggle-dark-icon');
+            const lightIcon = document.getElementById('theme-toggle-light-icon');
+            if (darkIcon && lightIcon) {
+                darkIcon.classList.toggle('hidden', !isDark);
+                lightIcon.classList.toggle('hidden', isDark);
+            }
         }
+        
+        // Set theme on page load
+        setInitialTheme();
+        
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function() {
+                    const isDark = document.documentElement.classList.contains('dark');
+                    
+                    // Toggle theme
+                    document.documentElement.classList.toggle('dark', !isDark);
+                    localStorage.setItem('color-theme', isDark ? 'light' : 'dark');
+                    
+                    // Toggle icons
+                    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+                    const lightIcon = document.getElementById('theme-toggle-light-icon');
+                    if (darkIcon && lightIcon) {
+                        darkIcon.classList.toggle('hidden', isDark);
+                        lightIcon.classList.toggle('hidden', !isDark);
+                    }
+                });
+            }
+        });
     </script>
-    <style>
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(-20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes ripple {
-            0% { transform: scale(0.8); opacity: 1; }
-            100% { transform: scale(2); opacity: 0; }
-        }
-
-        /* Enhanced button animations */
-        button, .btn {
-            position: relative;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
-        }
-
-        button:hover, .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        button:active, .btn:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        button::after, .btn::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100px;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            opacity: 0;
-            pointer-events: none;
-            transition: transform 0.5s, opacity 0.5s;
-        }
-
-        button:active::after, .btn:active::after {
-            transform: translate(-50%, -50%) scale(2);
-            opacity: 0;
-            transition: 0s;
-        }
-
-        /* Apply animations to elements */
-        .nav-item { animation: slideIn 0.5s ease-out; }
-        .card { animation: fadeIn 0.6s ease-out; }
-        
-        /* Smooth transitions */
-        .hover-scale { transition: transform 0.2s ease; }
-        .hover-scale:hover { transform: scale(1.02); }
-        
-        /* Status indicators */
-        .status-badge {
-            transition: all 0.3s ease;
-            animation: pulse 2s infinite;
-        }
-
-        /* Search and filter animations */
-        .search-container {
-            animation: slideIn 0.5s ease-out;
-            transition: all 0.3s ease;
-        }
-        .search-container:focus-within {
-            transform: scale(1.02);
-        }
-
-        .line-clamp-3 {
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            line-clamp: 3; /* Standard property for future compatibility */
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            line-clamp: 2; /* Standard property for future compatibility */
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        /* Custom dark mode styles */
-        .dark body {
-            color: #e2e8f0;
-            background-color: #121212; /* Darker gray background */
-        }
-        
-        /* Fix for text colors in dark mode */
-        .dark .dark\:text-white {
-            color: #ffffff !important;
-        }
-        
-        .dark .dark\:text-gray-300 {
-            color: #d1d5db !important;
-        }
-        
-        .dark .dark\:text-gray-400 {
-            color: #9ca3af !important;
-        }
-        
-        /* Background color fixes */
-        .dark .dark\:bg-gray-900 {
-            background-color: #121212 !important; /* Override Tailwind's dark bg */
-        }
-        
-        .dark .dark\:bg-gray-800 {
-            background-color: #1e1e1e !important; /* Override for content areas */
-        }
-        
-        .dark .dark\:bg-gray-700 {
-            background-color: #2a2a2a !important; /* Override for cards/items */
-        }
-        
-        .dark .dark\:hover\:bg-gray-600:hover {
-            background-color: #333333 !important; /* Hover state for items */
-        }
-        
-        .dark .dark\:border-gray-600 {
-            border-color: #4b5563 !important;
-        }
-        
-        /* Dark mode transitions */
-        body, .dark-transition {
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-        }
-    </style>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 min-h-screen">
     <!-- Add animation classes to main elements -->
@@ -531,8 +419,6 @@ if ($filter === 'events' || $filter === 'all') {
                     
                     <!-- Add some space based on number of lanes -->
                     <div style="height: <?php echo max(100, ($total_lanes * 45) + 50); ?>px;"></div>
-                    
-                    <!-- Legend with improved styling -->
                     <div class="flex flex-wrap items-center gap-4 mt-4 text-sm bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
                         <div class="flex items-center">
                             <div class="w-3 h-3 bg-blue-500 rounded-full mr-1.5"></div>
@@ -558,14 +444,6 @@ if ($filter === 'events' || $filter === 'all') {
                 </div>
             <?php else: ?>
                 <p class="text-gray-600 dark:text-gray-300">Nothing found.</p>
-                
-                <?php /* Remove the View All Events button when no events are found to be consistent
-                <div class="mt-6 text-center">
-                    <a href="events.php" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition duration-200">
-                        <i class="fas fa-calendar-alt mr-2"></i> View All Events
-                    </a>
-                </div>
-                */ ?>
             <?php endif; ?>
         </div>
         
@@ -726,12 +604,6 @@ if ($filter === 'events' || $filter === 'all') {
             <?php else: ?>
                 <p class="text-gray-600 dark:text-gray-300">No events found.</p>
                 
-                <!-- Remove the View All Events button when no events are found to be consistent -->
-                <!-- <div class="mt-6 text-center">
-                    <a href="events.php" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition duration-200">
-                        <i class="fas fa-calendar-alt mr-2"></i> View All Events
-                    </a>
-                </div> -->
             <?php endif; ?>
         </div>
         <?php endif; ?>
@@ -825,10 +697,7 @@ if ($filter === 'events' || $filter === 'all') {
     </div>
 
     <script>
-        // Add this at the beginning of the script section
         document.addEventListener('DOMContentLoaded', function() {
-            // The form will now auto-submit on date change, but we'll keep this handler
-            // for browsers that might not support the onchange attribute
             const dateInput = document.getElementById('scheduleDate');
             if (dateInput) {
                 dateInput.addEventListener('change', function() {
@@ -961,8 +830,179 @@ if ($filter === 'events' || $filter === 'all') {
             // Update local storage
             localStorage.setItem('color-theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
         });
+        
     </script>
+    
+
+<!-- Chatbot UI -->
+<div id="chatbot-container" class="fixed bottom-5 right-5 z-50 flex flex-col items-end">
+    <!-- Chat Button -->
+    <button id="chat-button" class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-4 shadow-lg flex items-center justify-center transition-all duration-300 focus:outline-none">
+        <i class="fas fa-robot text-xl"></i>
+    </button>
+    
+    <!-- Chat Interface -->
+    <div id="chat-interface" class="hidden bg-white dark:bg-gray-800 rounded-lg w-80 sm:w-96 max-h-96 mt-4 shadow-lg overflow-hidden transition-all duration-300 animate-fadeIn">
+        <!-- Chat Header -->
+        <div class="bg-blue-500 text-white p-1 flex justify-between items-center">
+            <h3 class="font-bold mx-2">AI Assistant</h3>
+            <button id="close-chat" class="text-white hover:text-gray-200  focus:outline-none">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <!-- Chat Messages -->
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-3 space-y-3" style="max-height: 300px;">
+            <div class="flex items-start mb-3">
+                <div class="bg-blue-100 dark:bg-blue-900 rounded-lg p-2 max-w-3/4 break-words">
+                    <p class="text-gray-800 dark:text-gray-200 text-sm">Hi! I'm your AI assistant. Ask me anything about your notes, tasks, or events!</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chat Input -->
+        <div class="border-t border-gray-200 dark:border-gray-700 p-3">
+            <form id="chat-form" class="flex items-center">
+                <input type="text" id="chat-input" class="flex-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-l-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ask a question...">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white rounded-r-lg py-2 px-4 focus:outline-none transition-colors duration-200">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Chatbot functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatButton = document.getElementById('chat-button');
+        const chatInterface = document.getElementById('chat-interface');
+        const closeChat = document.getElementById('close-chat');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+        
+        // Toggle chat interface
+        chatButton.addEventListener('click', function() {
+            chatInterface.classList.toggle('hidden');
+            if (!chatInterface.classList.contains('hidden')) {
+                chatInput.focus();
+            }
+        });
+        
+        // Close chat interface
+        closeChat.addEventListener('click', function() {
+            chatInterface.classList.add('hidden');
+        });
+        
+        // Handle form submission
+        chatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const question = chatInput.value.trim();
+            
+            if (question === '') return;
+            
+            // Add user message to chat
+            addMessage(question, 'user');
+            chatInput.value = '';
+            
+            // Show loading indicator
+            const loadingId = addLoadingMessage();
+            
+            // Send question to server
+            fetch('chatbot.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'question=' + encodeURIComponent(question)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Remove loading indicator
+                removeLoadingMessage(loadingId);
+                
+                if (data.answer) {
+                    // Add bot response to chat
+                    addMessage(data.answer, 'bot');
+                } else if (data.error) {
+                    // Add error message
+                    addMessage('Sorry, I encountered an error: ' + data.error, 'bot error');
+                }
+            })
+            .catch(error => {
+                // Remove loading indicator
+                removeLoadingMessage(loadingId);
+                
+                // Add error message
+                addMessage('Sorry, I encountered an error. Please try again later.', 'bot error');
+                console.error('Error:', error);
+            });
+        });
+        
+        // Function to add a message to the chat
+        function addMessage(message, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex items-start mb-3 ' + (sender === 'user' ? 'justify-end' : '');
+            
+            const messageBubble = document.createElement('div');
+            messageBubble.className = sender === 'user' 
+                ? 'bg-blue-500 text-white rounded-lg p-2 max-w-3/4 break-words'
+                : sender === 'bot error'
+                    ? 'bg-red-100 dark:bg-red-900 rounded-lg p-2 max-w-3/4 break-words'
+                    : 'bg-blue-100 dark:bg-blue-900 rounded-lg p-2 max-w-3/4 break-words';
+            
+            const messageText = document.createElement('p');
+            messageText.className = sender === 'user'
+                ? 'text-white text-sm'
+                : sender === 'bot error'
+                    ? 'text-red-800 dark:text-red-200 text-sm'
+                    : 'text-gray-800 dark:text-gray-200 text-sm';
+            messageText.textContent = message;
+            
+            messageBubble.appendChild(messageText);
+            messageDiv.appendChild(messageBubble);
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Function to add a loading message
+        function addLoadingMessage() {
+            const loadingId = 'loading-' + Date.now();
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = loadingId;
+            loadingDiv.className = 'flex items-start mb-3';
+            
+            const loadingBubble = document.createElement('div');
+            loadingBubble.className = 'bg-gray-100 dark:bg-gray-700 rounded-lg p-2 max-w-3/4 break-words';
+            
+            const loadingText = document.createElement('p');
+            loadingText.className = 'text-gray-500 dark:text-gray-400 text-sm';
+            loadingText.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Thinking...';
+            
+            loadingBubble.appendChild(loadingText);
+            loadingDiv.appendChild(loadingBubble);
+            chatMessages.appendChild(loadingDiv);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            return loadingId;
+        }
+        
+        // Function to remove loading message
+        function removeLoadingMessage(loadingId) {
+            const loadingElement = document.getElementById(loadingId);
+            if (loadingElement) {
+                loadingElement.remove();
+            }
+        }
+    });
+</script>
+
+</div>
+    <script src="js/dashboard.js"></script>
 </body>
 </html>
-
-<?php $conn->close(); ?>
