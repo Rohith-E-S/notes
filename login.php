@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Check if this script is being run directly or included
+// Check if this script is being run directly or include
 $is_direct_access = (basename($_SERVER['SCRIPT_FILENAME']) == basename(__FILE__));
 
 // Database connection parameters
