@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("ssssssii", $title, $description, $event_date, $event_time, $event_end_time, $location, $event_id, $user_id);
     
     if ($stmt->execute()) {
-        header("Location: display.php?filter=events");
+        header("Location: ../notes/display.php?filter=events");
         exit();
     } else {
         echo "Error updating event: " . $stmt->error;
