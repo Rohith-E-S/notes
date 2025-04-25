@@ -193,6 +193,7 @@ $conn->close();
             </button>
         </form>
         <p class="mt-6 text-gray-600 dark:text-gray-300 text-center">Don't have an account? <a href="register.php" class="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-200">Sign up here</a></p>
+        <p class="mt-2 text-gray-600 dark:text-gray-300 text-center">Forgot your password? <a href="forgot_password.php" class="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-200">Reset it here</a></p>
     </div>
 
     <script>
