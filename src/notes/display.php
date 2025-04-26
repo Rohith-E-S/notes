@@ -72,8 +72,8 @@ if ($filter === 'events' || $filter === 'all') {
     <title>Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/chatbot.css">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/chatbot.css">
     <script>
         // Function to set theme based on localStorage/preference
         function setInitialTheme() {
@@ -172,7 +172,7 @@ if ($filter === 'events' || $filter === 'all') {
                     </form>
 
                     <!-- Logout Button -->
-                    <a href="logout.php" class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-3 py-1.5 rounded-full text-sm transition-all duration-200 flex items-center btn" title="Log out of your account">
+                    <a href="../auth/logout.php" class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-3 py-1.5 rounded-full text-sm transition-all duration-200 flex items-center btn" title="Log out of your account">
                         <i class="fas fa-sign-out-alt mr-1.5"></i>
                         <span>Logout</span>
                     </a>
@@ -376,7 +376,7 @@ if ($filter === 'events' || $filter === 'all') {
                     ?>
                             <div class="absolute rounded-md px-3 py-1.5 text-xs text-white overflow-hidden whitespace-nowrap transition-all duration-200 <?php echo $event['color']; ?> <?php echo $shadow_class; ?> <?php echo $border_class; ?>"
                                  style="left: <?php echo $left; ?>%; width: <?php echo max(5, $width); ?>%; top: <?php echo $top; ?>px; z-index: <?php echo $is_current ? 5 : 1; ?>;"
-                                 onclick="window.location.href='edit_event.php?id=<?php echo substr($event['id'], 6); ?>'">
+                                 onclick="window.location.href='../events/edit_event.php?id=<?php echo substr($event['id'], 6); ?>'">
                                 <div class="flex items-center">
                                     <i class="far fa-calendar-alt mr-1.5"></i>
                                     <span class="font-medium"><?php echo htmlspecialchars($event['title']); ?></span>
@@ -404,7 +404,7 @@ if ($filter === 'events' || $filter === 'all') {
                     ?>
                             <div class="absolute rounded-md px-3 py-1.5 text-xs text-white overflow-hidden whitespace-nowrap transition-all duration-200 <?php echo $task['color']; ?> <?php echo $shadow_class; ?> <?php echo $border_class; ?>"
                                  style="left: <?php echo $left; ?>%; width: <?php echo max(5, $width); ?>%; top: <?php echo $top; ?>px; z-index: <?php echo $is_current ? 5 : 1; ?>;"
-                                 onclick="window.location.href='edit_task.php?id=<?php echo substr($task['id'], 5); ?>'">
+                                 onclick="window.location.href='../tasks/edit_task.php?id=<?php echo $task['id']; ?>'">
                                 <div class="flex items-center">
                                     <i class="fas <?php echo $task['icon']; ?> mr-1.5"></i>
                                     <span class="font-medium"><?php echo htmlspecialchars($task['title']); ?></span>
@@ -451,8 +451,8 @@ if ($filter === 'events' || $filter === 'all') {
         <?php if ($filter === 'all' || $filter === 'tasks'): ?>
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6 card hover-scale">
             <div class="flex justify-between items-center mb-6">
-                <a href="tasks.php"> <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Your Tasks</h2></a>
-                <a href="add_task.php" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200">
+                <a href="../tasks/tasks.php"> <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Your Tasks</h2></a>
+                <a href="../tasks/add_task.php" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200">
                     Add Task
                 </a>
             </div>
@@ -490,7 +490,7 @@ if ($filter === 'events' || $filter === 'all') {
                                 <span class="font-semibold">Due:</span> <?php echo date('F j, Y, g:i a', strtotime($task['due_date'])); ?>
                             </div>
                             <div class="flex space-x-2 mt-3" onclick="event.stopPropagation()">
-                                <a href="edit_task.php?id=<?php echo $task['id']; ?>" 
+                                <a href="../tasks/edit_task.php?id=<?php echo $task['id']; ?>" 
                                    class="bg-blue-500 text-white px-3 py-1 text-sm rounded-md hover:bg-blue-600 transition duration-200">
                                     Edit
                                 </a>
@@ -513,7 +513,7 @@ if ($filter === 'events' || $filter === 'all') {
                 
                 <!-- View All Tasks button -->
                 <div class="mt-6 text-center">
-                    <a href="tasks.php" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition duration-200">
+                    <a href="../tasks/tasks.php" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition duration-200">
                         <i class="fas fa-tasks mr-2"></i> View All Tasks
                     </a>
                 </div>
@@ -527,8 +527,8 @@ if ($filter === 'events' || $filter === 'all') {
         <?php if ($filter === 'all' || $filter === 'events'): ?>
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6 card hover-scale">
             <div class="flex justify-between items-center mb-6">
-                <a href="events.php"><h2 class="text-2xl font-bold text-gray-800 dark:text-white">Your Events</h2></a>
-                <a href="add_event.php" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200">
+                <a href="../events/events.php"><h2 class="text-2xl font-bold text-gray-800 dark:text-white">Your Events</h2></a>
+                <a href="../events/add_event.php" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200">
                     Add Event
                 </a>
             </div>
@@ -582,7 +582,7 @@ if ($filter === 'events' || $filter === 'all') {
                             </div>
                             <!-- Rest of event content -->
                             <div class="flex space-x-2 mt-3" onclick="event.stopPropagation()">
-                                <a href="edit_event.php?id=<?php echo $event['id']; ?>" 
+                                <a href="../events/edit_event.php?id=<?php echo $event['id']; ?>" 
                                    class="bg-blue-500 text-white px-3 py-1 text-sm rounded-md hover:bg-blue-600 transition duration-200">
                                     Edit
                                 </a>
@@ -597,7 +597,7 @@ if ($filter === 'events' || $filter === 'all') {
                 
                 <!-- View All Events button -->
                 <div class="mt-6 text-center">
-                    <a href="events.php" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition duration-200">
+                    <a href="../events/events.php" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition duration-200">
                         <i class="fas fa-calendar-alt mr-2"></i> View All Events
                     </a>
                 </div>
@@ -735,7 +735,7 @@ if ($filter === 'events' || $filter === 'all') {
 
         function deleteTask(taskId) {
             if (confirm('Are you sure you want to delete this task?')) {
-                fetch('delete_task.php', {
+                fetch('../tasks/delete_task.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
@@ -759,7 +759,7 @@ if ($filter === 'events' || $filter === 'all') {
 
         function deleteEvent(eventId) {
             if (confirm('Are you sure you want to delete this event?')) {
-                fetch('delete_event.php', {
+                fetch('../events/delete_event.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
@@ -782,7 +782,7 @@ if ($filter === 'events' || $filter === 'all') {
         }
 
         function markTaskComplete(taskId) {
-            fetch('mark_complete.php', {
+            fetch('../tasks/mark_complete.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -910,14 +910,21 @@ if ($filter === 'events' || $filter === 'all') {
             const loadingId = addLoadingMessage();
             
             // Send question to server
-            fetch('chatbot.php', {
+            fetch('../api/chatbot.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 body: 'question=' + encodeURIComponent(question)
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.error || 'Server error occurred');
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
                 // Remove loading indicator
                 removeLoadingMessage(loadingId);
@@ -935,7 +942,7 @@ if ($filter === 'events' || $filter === 'all') {
                 removeLoadingMessage(loadingId);
                 
                 // Add error message
-                addMessage('Sorry, I encountered an error. Please try again later.', 'bot error');
+                addMessage('Sorry, I encountered an error: ' + error.message, 'bot error');
                 console.error('Error:', error);
             });
         });
@@ -1003,6 +1010,6 @@ if ($filter === 'events' || $filter === 'all') {
 </script>
 
 </div>
-    <script src="js/dashboard.js"></script>
+    <script src="../js/dashboard.js"></script>
 </body>
 </html>

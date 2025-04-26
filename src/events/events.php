@@ -180,13 +180,13 @@ $event_result = $event_stmt->get_result();
                     </form>
 
                     <!-- Back to Dashboard Button -->
-                    <a href="display.php" class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-3 py-1.5 rounded-full text-sm transition-colors duration-200 flex items-center" title="Back to Dashboard">
+                    <a href="../notes/display.php" class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-3 py-1.5 rounded-full text-sm transition-colors duration-200 flex items-center" title="Back to Dashboard">
                         <i class="fas fa-home mr-1.5"></i>
                         <span>Dashboard</span>
                     </a>
 
                     <!-- Logout Button -->
-                    <a href="logout.php" class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-3 py-1.5 rounded-full text-sm transition-colors duration-200 flex items-center" title="Log out of your account">
+                    <a href="../auth/logout.php" class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-3 py-1.5 rounded-full text-sm transition-colors duration-200 flex items-center" title="Log out of your account">
                         <i class="fas fa-sign-out-alt mr-1.5"></i>
                         <span>Logout</span>
                     </a>

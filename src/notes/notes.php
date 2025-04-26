@@ -17,7 +17,7 @@ if ($conn->connect_error) {
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 $user_id = $_SESSION['user_id'];
@@ -289,7 +289,7 @@ $note_result = $note_stmt->get_result();
                     </a>
 
                     <!-- Logout Button -->
-                    <a href="logout.php" class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-3 py-1.5 rounded-full text-sm transition-colors duration-200 flex items-center" title="Log out of your account">
+                    <a href="../auth/logout.php" class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-3 py-1.5 rounded-full text-sm transition-colors duration-200 flex items-center" title="Log out of your account">
                         <i class="fas fa-sign-out-alt mr-1.5"></i>
                         <span>Logout</span>
                     </a>

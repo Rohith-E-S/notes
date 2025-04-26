@@ -208,7 +208,7 @@ $conn->close();
                     </button>
 
                     <!-- Back to Dashboard Button -->
-                    <a href="display.php" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center shadow-md">
+                    <a href="../notes/display.php" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center shadow-md">
                         <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
                     </a>
                 </div>

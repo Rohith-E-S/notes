@@ -118,6 +118,7 @@ $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
 // Check for errors
 if (curl_errno($ch)) {
+    error_log("Chatbot API Error: " . curl_error($ch));
     http_response_code(500);
     echo json_encode([
         'error' => 'API request failed: ' . curl_error($ch)
@@ -130,6 +131,7 @@ curl_close($ch);
 
 // If HTTP status code is not 200, return error
 if ($httpCode != 200) {
+    error_log("Chatbot API Error: HTTP Code " . $httpCode . ", Response: " . $response);
     http_response_code($httpCode);
     echo json_encode([
         'error' => 'API returned error code: ' . $httpCode,
@@ -146,6 +148,7 @@ if (isset($result['candidates'][0]['content']['parts'][0]['text'])) {
     $answer = $result['candidates'][0]['content']['parts'][0]['text'];
     echo json_encode(['answer' => $answer]);
 } else {
+    error_log("Chatbot API Error: Unexpected response format: " . $response);
     http_response_code(500);
     echo json_encode([
         'error' => 'Failed to generate answer',

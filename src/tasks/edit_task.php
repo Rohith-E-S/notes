@@ -304,7 +304,7 @@ $conn->close();
     
     <!-- Floating Action Button -->
     <div class="fixed bottom-6 right-6">
-        <button type="button" onclick="window.location.href='display.php'" class="bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center">
+        <button type="button" onclick="window.location.href='../notes/display.php'" class="bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center">
             <i class="fas fa-home"></i>
         </button>
     </div>

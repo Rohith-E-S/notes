@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 ?>
@@ -157,7 +157,7 @@ if (!isset($_SESSION['user_id'])) {
                     </button>
 
                     <!-- Back to Dashboard Button -->
-                    <a href="display.php" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center shadow-md">
+                    <a href="../notes/display.php" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center shadow-md">
                         <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
                     </a>
                 </div>
@@ -270,7 +270,7 @@ if (!isset($_SESSION['user_id'])) {
                                 class="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-lg transition duration-200 font-medium flex items-center justify-center shadow-md">
                             <i class="fas fa-plus mr-2"></i> Add Event
                         </button>
-                        <a href="display.php" 
+                        <a href="../notes/display.php" 
                            class="flex-1 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 py-3 px-6 rounded-lg transition duration-200 font-medium text-center flex items-center justify-center">
                             <i class="fas fa-times mr-2"></i> Cancel
                         </a>

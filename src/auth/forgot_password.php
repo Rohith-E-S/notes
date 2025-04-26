@@ -1,5 +1,20 @@
 <?php
 session_start();
+require '../../vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+// Email Configuration
+$smtp_host = "smtp.gmail.com";
+$smtp_port = 587;
+$smtp_username = "inspiria0@gmail.com";
+$smtp_password = "zujkfzkvykdzduaw"; // App Password for Notes App
+$email_from_name = "Notes App";
+
+// Enable debug mode for SMTP (0 = off, 1 = client messages, 2 = client and server messages)
+$smtp_debug = 0;
 
 // Database connection parameters
 $servername = "localhost";
@@ -35,17 +50,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['reset_otp'] = $otp;
         $_SESSION['otp_expiry'] = time() + (5 * 60); // OTP valid for 5 minutes
         
-        // Send email with OTP
-        $to = $email;
-        $subject = "Password Reset OTP";
-        $message = "Your OTP for password reset is: " . $otp . "\nThis OTP will expire in 5 minutes.";
-        $headers = "From: noreply@notesapp.com";
-        
-        if (mail($to, $subject, $message, $headers)) {
+        // Create a new PHPMailer instance
+        $mail = new PHPMailer(true);
+
+        try {
+            // Server settings
+            $mail->SMTPDebug = $smtp_debug;
+            $mail->isSMTP();
+            $mail->Host = $smtp_host;
+            $mail->SMTPAuth = true;
+            $mail->Username = $smtp_username;
+            $mail->Password = $smtp_password;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = $smtp_port;
+            
+            // Set timeout
+            $mail->Timeout = 10;
+            
+            // Recipients
+            $mail->setFrom($smtp_username, $email_from_name);
+            $mail->addAddress($email);
+
+            // Content
+            $mail->isHTML(true);
+            $mail->Subject = "Password Reset OTP";
+            $mail->Body = "Your OTP for password reset is: <b>" . $otp . "</b><br>This OTP will expire in 5 minutes.";
+            $mail->AltBody = "Your OTP for password reset is: " . $otp . "\nThis OTP will expire in 5 minutes.";
+
+            if (!$mail->send()) {
+                throw new Exception($mail->ErrorInfo);
+            }
+            
             header("Location: verify_otp.php");
             exit();
-        } else {
-            $error = "Failed to send OTP. Please try again.";
+        } catch (Exception $e) {
+            $error = "Failed to send OTP. ";
+            if (strpos($e->getMessage(), 'Could not authenticate') !== false) {
+                $error .= "Authentication failed. Please make sure you're using an App Password for Gmail.";
+            } else if (strpos($e->getMessage(), 'connect()') !== false) {
+                $error .= "Could not connect to the mail server. Please check your internet connection.";
+            } else {
+                $error .= "Error: " . $e->getMessage();
+            }
         }
     } else {
         $error = "No account found with this email address.";
@@ -67,6 +113,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .dark .dark\:text-white { color: #ffffff !important; }
         .dark .dark\:text-gray-300 { color: #d1d5db !important; }
         .dark .dark\:border-gray-700 { border-color: #4b5563 !important; }
+        
+        /* Fix for input text visibility in dark mode */
+        .dark input[type="email"] {
+            color: #ffffff !important;
+            background-color: #374151 !important;
+        }
+        
+        /* Ensure placeholder text is visible but slightly dimmed */
+        .dark input::placeholder {
+            color: #9ca3af !important;
+        }
     </style>
     <script>
         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
