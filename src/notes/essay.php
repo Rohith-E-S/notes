@@ -1,4 +1,3 @@
-// essay
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -84,10 +83,15 @@ function generateEssayWithGemini($title) {
     }
 }
 
-// Generate the essay using Gemini
-$essay = generateEssayWithGemini($title);
-
-// Return the essay as JSON
-header('Content-Type: application/json');
-echo json_encode(['essay' => $essay]);
+try {
+    // Generate the essay using Gemini
+    $essay = generateEssayWithGemini($title);
+    
+    // Return the essay as JSON
+    header('Content-Type: application/json');
+    echo json_encode(['essay' => $essay]);
+} catch (Exception $e) {
+    header('Content-Type: application/json');
+    echo json_encode(['error' => 'Failed to generate essay: ' . $e->getMessage()]);
+}
 ?>

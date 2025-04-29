@@ -190,7 +190,7 @@ if (!isset($_SESSION['user_id'])) {
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-10">
-            <form action="process.php" method="POST" class="space-y-8" enctype="multipart/form-data">
+            <form action="../api/process.php" method="POST" class="space-y-8" enctype="multipart/form-data">
                 <!-- Title Input -->
                 <div>
                     <input type="text" style="border-radius: 12px;" 
