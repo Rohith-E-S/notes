@@ -43,6 +43,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .dark .dark\:text-white { color: #ffffff !important; }
         .dark .dark\:text-gray-300 { color: #d1d5db !important; }
         .dark .dark\:border-gray-700 { border-color: #4b5563 !important; }
+        .dark input,
+        .dark textarea,
+        .dark select {
+            color: #fff !important;
+            background-color: #374151 !important;
+            border-color: #4b5563 !important;
+        }
+        .dark input::placeholder,
+        .dark textarea::placeholder {
+            color: #a1a1aa !important;
+            opacity: 1;
+        }
+        .dark label { color: #d1d5db !important; }
     </style>
     <script>
         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -122,4 +135,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
     </script>
 </body>
-</html> 
+</html>

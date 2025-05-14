@@ -35,7 +35,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: login.php"); // Redirect to login
         exit();
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        if ($conn->errno == 1062) { // Duplicate entry error code
+            echo "<script>alert('Email already registered! Please use a different email.');</script>";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
     }
 }
 $conn->close();
