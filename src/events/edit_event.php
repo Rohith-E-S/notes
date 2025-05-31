@@ -302,7 +302,7 @@ $event = $result->fetch_assoc();
                                 class="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-lg transition duration-200 font-medium flex items-center justify-center shadow-md">
                             <i class="fas fa-save mr-2"></i> Update Event
                         </button>
-                        <a href="display.php" 
+                        <a href="../notes/display.php" 
                            class="flex-1 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 py-3 px-6 rounded-lg transition duration-200 font-medium text-center flex items-center justify-center">
                             <i class="fas fa-times mr-2"></i> Cancel
                         </a>

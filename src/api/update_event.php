@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("ssssssii", $title, $description, $event_date, $event_time, $event_end_time, $location, $event_id, $user_id);
     
     if ($stmt->execute()) {
-        header("Location: ../notes/display.php?filter=events");
+        header("Location: ../notes/display.php?message=Event updated successfully");
         exit();
     } else {
         echo "Error updating event: " . $stmt->error;
