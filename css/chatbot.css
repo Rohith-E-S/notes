@@ -4,53 +4,174 @@
 #chat-button {
     transform-origin: center;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    border: none;
+    padding: 12px;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 #chat-button:hover {
     transform: scale(1.1);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    background: linear-gradient(135deg, #4338ca, #4f46e5);
 }
 
 #chat-button:active {
     transform: scale(0.95);
 }
 
-/* Chat interface animations */
+/* Chat interface styling */
 #chat-interface {
     transform-origin: bottom right;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.dark #chat-interface {
+    background: rgba(17, 24, 39, 0.95);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 #chat-interface.hidden {
-    transform: scale(0.95);
+    transform: scale(0.95) translateY(20px);
     opacity: 0;
     pointer-events: none;
 }
 
 #chat-interface:not(.hidden) {
-    transform: scale(1);
+    transform: scale(1) translateY(0);
     opacity: 1;
+}
+
+/* Chat header */
+.chat-header {
+    padding: 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: white;
+    border-radius: 16px 16px 0 0;
+}
+
+.dark .chat-header {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Message container */
+#chat-messages {
+    padding: 16px;
+    gap: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Message styles */
+.message {
+    padding: 12px 16px;
+    border-radius: 12px;
+    max-width: 85%;
+    line-height: 1.5;
+}
+
+.user-message {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+
+.bot-message {
+    background: #f3f4f6;
+    color: #111827;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+}
+
+.dark .bot-message {
+    background: rgba(255, 255, 255, 0.1);
+    color: #f3f4f6;
 }
 
 /* Message animations */
 @keyframes messageIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { 
+        opacity: 0; 
+        transform: translateY(10px);
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0);
+    }
 }
 
 #chat-messages > div {
     animation: messageIn 0.3s ease-out forwards;
 }
 
+/* Input area */
+.chat-input-container {
+    padding: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 0 0 16px 16px;
+}
+
+.dark .chat-input-container {
+    background: rgba(17, 24, 39, 0.5);
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+#chat-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.dark #chat-input {
+    background: rgba(17, 24, 39, 0.95);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+#chat-input:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
 /* Loading animation */
 @keyframes pulse {
-    0% { opacity: 0.6; }
-    50% { opacity: 1; }
-    100% { opacity: 0.6; }
+    0% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+    100% { opacity: 0.4; }
 }
 
 .loading-indicator {
     animation: pulse 1.5s infinite;
+    display: flex;
+    gap: 4px;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    width: fit-content;
+}
+
+.dark .loading-indicator {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.loading-dot {
+    width: 6px;
+    height: 6px;
+    background: currentColor;
+    border-radius: 50%;
 }
 
 /* Scrollbar styling */
@@ -72,7 +193,7 @@
     background: rgba(0, 0, 0, 0.2);
 }
 
-/* Dark mode adjustments */
+/* Dark mode scrollbar adjustments */
 .dark #chat-messages::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.05);
 }

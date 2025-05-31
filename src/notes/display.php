@@ -147,7 +147,7 @@ if ($filter === 'events' || $filter === 'all') {
                         </button>
                     </div>
 
-                    <form action="display.php" method="GET" class="flex items-center space-x-2 w-full md:w-auto search-container">
+                    <form action="display.php" method="GET" class="flex items-center space-x-2 w-full md:w-80 search-container">
                         <select name="filter" onchange="this.form.submit()" class="py-1 sm:py-2 px-2 sm:px-3 text-xs sm:text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-700 w-full sm:w-auto" title="Filter your results">
                             <option value="all" <?php echo ($filter === 'all') ? 'selected' : ''; ?>>All</option>
                             <option value="tasks" <?php echo ($filter === 'tasks') ? 'selected' : ''; ?>>Tasks</option>
@@ -681,7 +681,8 @@ if ($filter === 'events' || $filter === 'all') {
         });
 
         function deleteNote(noteId) {
-            if (confirm('Are you sure you want to delete this note?')) {
+            // Using a custom modal for confirmation instead of alert()
+            showConfirmationModal('Are you sure you want to delete this note?', () => {
                 fetch('delete.php', {
                     method: 'POST',
                     headers: {
@@ -694,18 +695,20 @@ if ($filter === 'events' || $filter === 'all') {
                     if (data.success) {
                         location.reload();
                     } else {
-                        alert('Error deleting note: ' + data.message);
+                        // Using a custom modal for error display
+                        showMessageModal('Error deleting note: ' + data.message);
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Error deleting note');
+                    showMessageModal('Error deleting note');
                 });
-            }
+            });
         }
 
         function deleteTask(taskId) {
-            if (confirm('Are you sure you want to delete this task?')) {
+            // Using a custom modal for confirmation instead of alert()
+            showConfirmationModal('Are you sure you want to delete this task?', () => {
                 fetch('../tasks/delete_task.php', {
                     method: 'POST',
                     headers: {
@@ -718,18 +721,20 @@ if ($filter === 'events' || $filter === 'all') {
                     if (data.success) {
                         location.reload(); // Reload the page to reflect changes
                     } else {
-                        alert('Error deleting task: ' + data.message);
+                        // Using a custom modal for error display
+                        showMessageModal('Error deleting task: ' + data.message);
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Error deleting task');
+                    showMessageModal('Error deleting task');
                 });
-            }
+            });
         }
 
         function deleteEvent(eventId) {
-            if (confirm('Are you sure you want to delete this event?')) {
+            // Using a custom modal for confirmation instead of alert()
+            showConfirmationModal('Are you sure you want to delete this event?', () => {
                 fetch('../events/delete_event.php', {
                     method: 'POST',
                     headers: {
@@ -742,14 +747,15 @@ if ($filter === 'events' || $filter === 'all') {
                     if (data.success) {
                         location.reload(); // Reload the page to reflect changes
                     } else {
-                        alert('Error deleting event: ' + data.message);
+                        // Using a custom modal for error display
+                        showMessageModal('Error deleting event: ' + data.message);
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Error deleting event');
+                    showMessageModal('Error deleting event');
                 });
-            }
+            });
         }
 
         function markTaskComplete(taskId) {
@@ -765,23 +771,61 @@ if ($filter === 'events' || $filter === 'all') {
                 if (data.success) {
                     location.reload(); // Reload the page to reflect changes
                 } else {
-                    alert('Error marking task as complete: ' + data.message);
+                    // Using a custom modal for error display
+                    showMessageModal('Error marking task as complete: ' + data.message);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Error marking task as complete');
+                showMessageModal('Error marking task as complete');
             });
         }
 
-        // Dark mode toggle functionality
-        // The previous script block for theme toggle was slightly redundant and had a potential race condition.
-        // The `setInitialTheme` function correctly applies the `dark` class to `document.documentElement`.
-        // The `DOMContentLoaded` listener then handles the icon visibility and the click event.
-        // I've removed the redundant `var` declarations and simplified the logic within `DOMContentLoaded`.
-        // The `themeToggleDarkIcon` and `themeToggleLightIcon` variables are now correctly scoped within `DOMContentLoaded`.
-        // The initial icon visibility is now set *after* the DOM is loaded.
-        // The `localStorage` update and class toggling remain the same.
+        // Custom Modal Functions (replacing alert and confirm)
+        function showMessageModal(message) {
+            const modalHtml = `
+                <div id="custom-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-[9999]">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-xl max-w-sm mx-auto">
+                        <p class="text-gray-800 dark:text-gray-200 mb-4">${message}</p>
+                        <button id="modal-close-btn" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            document.getElementById('modal-close-btn').addEventListener('click', () => {
+                document.getElementById('custom-modal').remove();
+            });
+        }
+
+        function showConfirmationModal(message, onConfirm) {
+            const modalHtml = `
+                <div id="custom-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-[9999]">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-xl max-w-sm mx-auto">
+                        <p class="text-gray-800 dark:text-gray-200 mb-4">${message}</p>
+                        <div class="flex justify-end space-x-3">
+                            <button id="modal-cancel-btn" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 focus:outline-none">
+                                Cancel
+                            </button>
+                            <button id="modal-confirm-btn" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none">
+                                Confirm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+            document.getElementById('modal-confirm-btn').addEventListener('click', () => {
+                onConfirm();
+                document.getElementById('custom-modal').remove();
+            });
+
+            document.getElementById('modal-cancel-btn').addEventListener('click', () => {
+                document.getElementById('custom-modal').remove();
+            });
+        }
         
     </script>
     
@@ -793,9 +837,9 @@ if ($filter === 'events' || $filter === 'all') {
     
     <div id="chat-interface" class="hidden bg-white dark:bg-gray-800 rounded-lg w-80 sm:w-96 max-h-96 mt-4 shadow-lg overflow-hidden transition-all duration-300 animate-fadeIn">
         <div class="bg-blue-500 text-white p-1 flex justify-between items-center">
-            <h3 class="font-bold mx-2">AI Assistant</h3>
+            <h3 class="font-bold mx-3">AI Assistant</h3>
             <button id="close-chat" class="text-white hover:text-gray-200  focus:outline-none">
-                <i class="fas fa-times"></i>
+                <i class="fas fa-times mx-3"></i>
             </button>
         </div>
         
@@ -809,7 +853,7 @@ if ($filter === 'events' || $filter === 'all') {
         
         <div class="border-t border-gray-200 dark:border-gray-700 p-3">
             <form id="chat-form" class="flex items-center">
-                <input type="text" id="chat-input" class="flex-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-l-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ask a question...">
+                <input type="text" id="chat-input" class="flex-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-l-lg px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ask a question...">
                 <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white rounded-r-lg py-2 px-4 focus:outline-none transition-colors duration-200">
                     <i class="fas fa-paper-plane"></i>
                 </button>
