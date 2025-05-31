@@ -210,7 +210,7 @@ if (!$note) {
                         <i class="fas fa-arrow-left mr-2"></i> Back
                     </a>
                     <!-- Delete Button -->
-                    <form action="delete.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this note?');">
+                    <form action="../api/delete.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this note?');">
                         <input type="hidden" name="note_id" value="<?php echo $note['id']; ?>">
                         <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition" title="Permanently delete this note">
                             Delete
@@ -224,7 +224,7 @@ if (!$note) {
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 md:p-10">
-            <form action="update.php" method="POST" class="space-y-8" enctype="multipart/form-data">
+            <form action="../api/update.php" method="POST" class="space-y-8" enctype="multipart/form-data">
                 <input type="hidden" name="note_id" value="<?php echo $note['id']; ?>">
                 
                 <!-- Title Input -->
@@ -278,7 +278,7 @@ if (!$note) {
                                         (<?php echo round($attachment['file_size'] / 1024, 2); ?> KB)
                                     </span>
                                 </a>
-                                <a href="delete_attachment.php?id=<?php echo $attachment['id']; ?>&note_id=<?php echo $note_id; ?>" 
+                                <a href="../api/delete_attachment.php?id=<?php echo $attachment['id']; ?>&note_id=<?php echo $note_id; ?>" 
                                    class="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
                                    onclick="return confirm('Are you sure you want to delete this attachment?');">
                                     <i class="fas fa-trash"></i>

@@ -124,7 +124,7 @@ if ($filter === 'events' || $filter === 'all') {
     <!-- Navigation Bar -->
     <nav class="bg-white dark:bg-gray-800 shadow-lg mb-6 transition-colors duration-200 nav-item">
         <!-- Add animation classes to navigation elements -->
-        <div class="max-w-6xl mx-auto px-4">
+        <div class="max-w-7xl mx-auto px-4">
             <div class="flex flex-wrap justify-between items-center py-3 space-y-2 sm:space-y-0">
                 <!-- Left Section: Title -->
                 <h1 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white transition-colors duration-200 flex items-center">

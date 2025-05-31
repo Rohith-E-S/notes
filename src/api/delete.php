@@ -36,16 +36,16 @@ if (isset($_POST['note_id'])) {
 
     if ($stmt->affected_rows > 0) {
         // Redirect to the display page after successful deletion
-        header("Location: display.php?message=Note deleted successfully");
+        header("Location: ../notes/display.php?message=Note deleted successfully");
         exit();
     } else {
         // Redirect with an error message if the deletion failed
-        header("Location: display.php?error=Failed to delete note");
+        header("Location: ../notes/display.php?error=Failed to delete note");
         exit();
     }
 } else {
     // Redirect with an error message if note_id is not provided
-    header("Location: display.php?error=Invalid request");
+    header("Location: ../notes/display.php?error=Invalid request");
     exit();
 }
 
