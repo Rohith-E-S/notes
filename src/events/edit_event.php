@@ -185,7 +185,7 @@ $event = $result->fetch_assoc();
                     </button>
 
                     <!-- Back to Dashboard Button -->
-                    <a href="display.php" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center shadow-md">
+                    <a href="../notes/display.php" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center shadow-md">
                         <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
                     </a>
                 </div>
@@ -203,7 +203,7 @@ $event = $result->fetch_assoc();
         </div>
         
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 mb-6">
-            <form action="update_event.php" method="POST" class="space-y-4">
+            <form action="../api/update_event.php" method="POST" class="space-y-4">
                 <input type="hidden" name="event_id" value="<?php echo $event['id']; ?>">
                 
                 <!-- Event Title -->

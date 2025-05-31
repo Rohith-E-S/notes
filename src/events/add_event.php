@@ -175,7 +175,7 @@ if (!isset($_SESSION['user_id'])) {
         </div>
         
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 mb-6">
-            <form action="process_event.php" method="POST" class="space-y-4">
+            <form action="../api/process_event.php" method="POST" class="space-y-4">
                 <!-- Event Title -->
                 <div class="glass-effect p-4 rounded-lg transition-all duration-300">
                     <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
