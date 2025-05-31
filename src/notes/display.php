@@ -82,14 +82,6 @@ if ($filter === 'events' || $filter === 'all') {
                           window.matchMedia('(prefers-color-scheme: dark)').matches);
             
             document.documentElement.classList.toggle('dark', isDark);
-            
-            // Set initial icon visibility
-            const darkIcon = document.getElementById('theme-toggle-dark-icon');
-            const lightIcon = document.getElementById('theme-toggle-light-icon');
-            if (darkIcon && lightIcon) {
-                darkIcon.classList.toggle('hidden', !isDark);
-                lightIcon.classList.toggle('hidden', isDark);
-            }
         }
         
         // Set theme on page load
@@ -98,6 +90,18 @@ if ($filter === 'events' || $filter === 'all') {
         // Theme toggle functionality
         document.addEventListener('DOMContentLoaded', function() {
             const themeToggle = document.getElementById('theme-toggle');
+            const darkIcon = document.getElementById('theme-toggle-dark-icon');
+            const lightIcon = document.getElementById('theme-toggle-light-icon');
+            
+            // Set initial icon visibility based on current theme
+            if (document.documentElement.classList.contains('dark')) {
+                if (lightIcon) lightIcon.classList.remove('hidden');
+                if (darkIcon) darkIcon.classList.add('hidden');
+            } else {
+                if (darkIcon) darkIcon.classList.remove('hidden');
+                if (lightIcon) lightIcon.classList.add('hidden');
+            }
+
             if (themeToggle) {
                 themeToggle.addEventListener('click', function() {
                     const isDark = document.documentElement.classList.contains('dark');
@@ -107,8 +111,6 @@ if ($filter === 'events' || $filter === 'all') {
                     localStorage.setItem('color-theme', isDark ? 'light' : 'dark');
                     
                     // Toggle icons
-                    const darkIcon = document.getElementById('theme-toggle-dark-icon');
-                    const lightIcon = document.getElementById('theme-toggle-light-icon');
                     if (darkIcon && lightIcon) {
                         darkIcon.classList.toggle('hidden', isDark);
                         lightIcon.classList.toggle('hidden', !isDark);
@@ -119,28 +121,21 @@ if ($filter === 'events' || $filter === 'all') {
     </script>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 min-h-screen">
-    <!-- Add animation classes to main elements -->
     <div class="animate-fade-in">
-    <!-- Navigation Bar -->
     <nav class="bg-white dark:bg-gray-800 shadow-lg mb-6 transition-colors duration-200 nav-item">
-        <!-- Add animation classes to navigation elements -->
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex flex-wrap justify-between items-center py-3 space-y-2 sm:space-y-0">
-                <!-- Left Section: Title -->
                 <h1 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white transition-colors duration-200 flex items-center">
                     <i class="fas fa-tasks mr-2"></i> <span class="hidden sm:inline">My Productivity Dashboard</span>
                 </h1>
 
-                <!-- Middle Section: Welcome Message -->
                 <div class="order-3 md:order-2 mt-2 md:mt-0 flex justify-center">
                     <span class="text-gray-700 dark:text-gray-300 text-lg transition-colors duration-200 hidden md:inline-block">
                         Welcome, <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong>
                     </span>
                 </div>
 
-                <!-- Right Section: Theme Toggle, Search and Logout -->
                 <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-3 md:space-x-4 mt-2 sm:mt-0 order-2 md:order-3 w-full sm:w-auto">
-                    <!-- Theme Toggle Button -->
                     <div class="flex items-center space-x-4 w-full md:w-auto justify-center md:justify-start">
                         <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-full p-2 transition-colors duration-200" title="Toggle dark mode">
                             <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -152,9 +147,7 @@ if ($filter === 'events' || $filter === 'all') {
                         </button>
                     </div>
 
-                    <!-- Search Form -->
                     <form action="display.php" method="GET" class="flex items-center space-x-2 w-full md:w-auto search-container">
-                        <!-- Separate Filter Dropdown -->
                         <select name="filter" onchange="this.form.submit()" class="py-1 sm:py-2 px-2 sm:px-3 text-xs sm:text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-700 w-full sm:w-auto" title="Filter your results">
                             <option value="all" <?php echo ($filter === 'all') ? 'selected' : ''; ?>>All</option>
                             <option value="tasks" <?php echo ($filter === 'tasks') ? 'selected' : ''; ?>>Tasks</option>
@@ -162,7 +155,6 @@ if ($filter === 'events' || $filter === 'all') {
                             <option value="events" <?php echo ($filter === 'events') ? 'selected' : ''; ?>>Events</option>
                         </select>
                         
-                        <!-- Search Input with Button -->
                         <div class="flex items-center w-full rounded-full overflow-hidden border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 shadow-sm">
                             <input type="text" name="search" placeholder="Search..." class="w-full px-2 text-xs sm:text-sm bg-transparent border-none focus:ring-0 text-gray-800 dark:text-white" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
                             <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white p-2 focus:outline-none transition-colors duration-200" title="Search">
@@ -171,7 +163,6 @@ if ($filter === 'events' || $filter === 'all') {
                         </div>
                     </form>
 
-                    <!-- Logout Button -->
                     <a href="../auth/logout.php" class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-3 py-1.5 rounded-full text-sm transition-all duration-200 flex items-center btn" title="Log out of your account">
                         <i class="fas fa-sign-out-alt mr-1.5"></i>
                         <span>Logout</span>
@@ -181,16 +172,13 @@ if ($filter === 'events' || $filter === 'all') {
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="max-w-6xl mx-auto px-4 sm:px-6">
-        <!-- Today's Schedule Gantt Chart -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-6 card hover-scale">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl font-bold text-gray-800 dark:text-white flex items-center">
                     <i class="far fa-calendar-check mr-2"></i> Schedule for the day
                 </h2>
                 <div class="flex items-center">
-                    <!-- Date selector -->
                     <form id="dateSelectForm" class="flex items-center">
                         <input type="date" id="scheduleDate" name="scheduleDate" 
                                class="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
@@ -325,7 +313,6 @@ if ($filter === 'events' || $filter === 'all') {
             
             <?php if ($has_items): ?>
                 <div class="relative mt-6">
-                    <!-- Current time indicator -->
                     <?php 
                     $now = new DateTime('now', new DateTimeZone('Asia/Kolkata')); // Use Indian timezone
                     $current_hour_decimal = $now->format('G') + ($now->format('i') / 60);
@@ -339,7 +326,6 @@ if ($filter === 'events' || $filter === 'all') {
                         </div>
                     </div>
                     
-                    <!-- Time indicators with improved styling -->
                     <div class="flex border-b-2 border-gray-300 dark:border-gray-600 pb-2 mb-2">
                         <?php for ($hour = 0; $hour < 24; $hour++): ?>
                             <div class="flex-1 text-xs text-center <?php echo ($hour == $current_hour) ? 'text-red-600 dark:text-red-400 font-bold' : 'text-gray-500 dark:text-gray-400'; ?>">
@@ -350,7 +336,6 @@ if ($filter === 'events' || $filter === 'all') {
                         <?php endfor; ?>
                     </div>
                     
-                    <!-- Gantt chart grid with improved styling -->
                     <div class="h-6 w-full flex mb-1 bg-gray-50 dark:bg-gray-700 rounded">
                         <?php for ($hour = 0; $hour < 24; $hour++): ?>
                             <div class="flex-1 border-r border-gray-200 dark:border-gray-600 
@@ -360,7 +345,6 @@ if ($filter === 'events' || $filter === 'all') {
                         <?php endfor; ?>
                     </div>
                     
-                    <!-- Render events -->
                     <?php 
                     $lane_index = 0;
                     foreach ($event_lanes as $lane): 
@@ -389,7 +373,6 @@ if ($filter === 'events' || $filter === 'all') {
                     endforeach; 
                     ?>
                     
-                    <!-- Render tasks -->
                     <?php 
                     foreach ($task_lanes as $lane): 
                         foreach ($lane as $task):
@@ -417,7 +400,6 @@ if ($filter === 'events' || $filter === 'all') {
                     endforeach; 
                     ?>
                     
-                    <!-- Add some space based on number of lanes -->
                     <div style="height: <?php echo max(100, ($total_lanes * 45) + 50); ?>px;"></div>
                     <div class="flex flex-wrap items-center gap-4 mt-4 text-sm bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
                         <div class="flex items-center">
@@ -447,7 +429,6 @@ if ($filter === 'events' || $filter === 'all') {
             <?php endif; ?>
         </div>
         
-        <!-- Tasks Section -->
         <?php if ($filter === 'all' || $filter === 'tasks'): ?>
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6 card hover-scale">
             <div class="flex justify-between items-center mb-6">
@@ -469,7 +450,6 @@ if ($filter === 'events' || $filter === 'all') {
             if ($task_result && $task_result->num_rows > 0): ?>
                 <div class="space-y-6">
                     <?php while ($task = $task_result->fetch_assoc()): ?>
-                        <!-- Wrap the task in a styled block that's clickable -->
                         <div onclick="window.location.href='tasks.php'" class="block border rounded-lg p-6 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 hover:shadow-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition duration-200 cursor-pointer">
                             <div class="flex justify-between items-start">
                                 <h3 class="text-xl font-bold text-gray-800 dark:text-white"><?php echo htmlspecialchars($task['title']); ?></h3>
@@ -482,7 +462,6 @@ if ($filter === 'events' || $filter === 'all') {
                                     </span>
                                 </span>
                             </div>
-                            <!-- Task Description -->
                             <p class="text-[17px] text-gray-700 dark:text-gray-300 mt-4 mb-4 leading-relaxed line-clamp-2">
                                 <?php echo nl2br(htmlspecialchars($task['description'])); ?>
                             </p>
@@ -511,7 +490,6 @@ if ($filter === 'events' || $filter === 'all') {
                     <?php endwhile; ?>
                 </div>
                 
-                <!-- View All Tasks button -->
                 <div class="mt-6 text-center">
                     <a href="../tasks/tasks.php" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition duration-200">
                         <i class="fas fa-tasks mr-2"></i> View All Tasks
@@ -523,7 +501,6 @@ if ($filter === 'events' || $filter === 'all') {
         </div>
         <?php endif; ?>
         
-        <!-- Events Section -->
         <?php if ($filter === 'all' || $filter === 'events'): ?>
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6 card hover-scale">
             <div class="flex justify-between items-center mb-6">
@@ -546,7 +523,6 @@ if ($filter === 'events' || $filter === 'all') {
                 <div class="space-y-6">
                     <?php while ($event = $event_result->fetch_assoc()): ?>
                          <div onclick="window.location.href='events.php'" class="block border rounded-lg p-6 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 hover:shadow-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition duration-200 cursor-pointer">
-                            <!-- Event content remains unchanged -->
                             <div class="flex justify-between items-start">
                                 <h3 class="text-xl font-bold text-gray-800 dark:text-white"><?php echo htmlspecialchars($event['title']); ?></h3>
                                 <?php
@@ -580,7 +556,6 @@ if ($filter === 'events' || $filter === 'all') {
                                 </div>
                                 <?php endif; ?>
                             </div>
-                            <!-- Rest of event content -->
                             <div class="flex space-x-2 mt-3" onclick="event.stopPropagation()">
                                 <a href="../events/edit_event.php?id=<?php echo $event['id']; ?>" 
                                    class="bg-blue-500 text-white px-3 py-1 text-sm rounded-md hover:bg-blue-600 transition duration-200">
@@ -595,7 +570,6 @@ if ($filter === 'events' || $filter === 'all') {
                     <?php endwhile; ?>
                 </div>
                 
-                <!-- View All Events button -->
                 <div class="mt-6 text-center">
                     <a href="../events/events.php" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition duration-200">
                         <i class="fas fa-calendar-alt mr-2"></i> View All Events
@@ -607,7 +581,6 @@ if ($filter === 'events' || $filter === 'all') {
             <?php endif; ?>
         </div>
         <?php endif; ?>
-        <!-- Notes Section -->
         <?php if ($filter === 'all' || $filter === 'notes'): ?>
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6 card hover-scale">
             <div class="flex justify-between items-center mb-6">
@@ -645,7 +618,6 @@ if ($filter === 'events' || $filter === 'all') {
                         $count_stmt->execute();
                         $total_attachments = $count_stmt->get_result()->fetch_assoc()['total'];
                     ?>
-                        <!-- Note content remains unchanged -->
                         <a href="notes.php" class="block border rounded-lg p-6 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 hover:shadow-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition duration-200">
                             <div class="flex justify-between items-start">
                                 <h3 class="text-xl font-bold text-gray-800 dark:text-white"><?php echo htmlspecialchars($note['title']); ?></h3>
@@ -683,7 +655,6 @@ if ($filter === 'events' || $filter === 'all') {
                     <?php endwhile; ?>
                 </div>
                 
-                <!-- View All Notes button -->
                 <div class="mt-6 text-center">
                     <a href="notes.php" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition duration-200">
                         <i class="fas fa-sticky-note mr-2"></i> View All Notes
@@ -804,46 +775,23 @@ if ($filter === 'events' || $filter === 'all') {
         }
 
         // Dark mode toggle functionality
-        var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-        var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-        var htmlElement = document.documentElement;
-
-        // Initial state setup
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            htmlElement.classList.add('dark');
-            themeToggleLightIcon.classList.remove('hidden');
-        } else {
-            htmlElement.classList.remove('dark');
-            themeToggleDarkIcon.classList.remove('hidden');
-        }
-
-        var themeToggleBtn = document.getElementById('theme-toggle');
-
-        themeToggleBtn.addEventListener('click', function() {
-            // Toggle icons
-            themeToggleDarkIcon.classList.toggle('hidden');
-            themeToggleLightIcon.classList.toggle('hidden');
-
-            // Toggle dark mode class
-            htmlElement.classList.toggle('dark');
-            
-            // Update local storage
-            localStorage.setItem('color-theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
-        });
+        // The previous script block for theme toggle was slightly redundant and had a potential race condition.
+        // The `setInitialTheme` function correctly applies the `dark` class to `document.documentElement`.
+        // The `DOMContentLoaded` listener then handles the icon visibility and the click event.
+        // I've removed the redundant `var` declarations and simplified the logic within `DOMContentLoaded`.
+        // The `themeToggleDarkIcon` and `themeToggleLightIcon` variables are now correctly scoped within `DOMContentLoaded`.
+        // The initial icon visibility is now set *after* the DOM is loaded.
+        // The `localStorage` update and class toggling remain the same.
         
     </script>
     
 
-<!-- Chatbot UI -->
 <div id="chatbot-container" class="fixed bottom-5 right-5 z-50 flex flex-col items-end">
-    <!-- Chat Button -->
     <button id="chat-button" class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-4 shadow-lg flex items-center justify-center transition-all duration-300 focus:outline-none">
         <i class="fas fa-robot text-xl"></i>
     </button>
     
-    <!-- Chat Interface -->
     <div id="chat-interface" class="hidden bg-white dark:bg-gray-800 rounded-lg w-80 sm:w-96 max-h-96 mt-4 shadow-lg overflow-hidden transition-all duration-300 animate-fadeIn">
-        <!-- Chat Header -->
         <div class="bg-blue-500 text-white p-1 flex justify-between items-center">
             <h3 class="font-bold mx-2">AI Assistant</h3>
             <button id="close-chat" class="text-white hover:text-gray-200  focus:outline-none">
@@ -851,7 +799,6 @@ if ($filter === 'events' || $filter === 'all') {
             </button>
         </div>
         
-        <!-- Chat Messages -->
         <div id="chat-messages" class="flex-1 overflow-y-auto p-3 space-y-3" style="max-height: 300px;">
             <div class="flex items-start mb-3">
                 <div class="bg-blue-100 dark:bg-blue-900 rounded-lg p-2 max-w-3/4 break-words">
@@ -860,7 +807,6 @@ if ($filter === 'events' || $filter === 'all') {
             </div>
         </div>
         
-        <!-- Chat Input -->
         <div class="border-t border-gray-200 dark:border-gray-700 p-3">
             <form id="chat-form" class="flex items-center">
                 <input type="text" id="chat-input" class="flex-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-l-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ask a question...">
