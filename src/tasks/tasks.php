@@ -309,7 +309,35 @@ $task_result = $task_stmt->get_result();
             <?php endif; ?>
         </div>
     </div>
+    <!-- Chatbot Section -->
+    <div id="chatbot-container" class="fixed bottom-5 right-5 z-50 flex flex-col items-end">
+        <button id="chat-button" class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-4 shadow-lg flex items-center justify-center transition-all duration-300 focus:outline-none">
+            <i class="fas fa-robot text-xl"></i>
+        </button>
 
+        <div id="chat-interface" class="hidden bg-white dark:bg-gray-800 rounded-lg w-80 sm:w-96 max-h-96 mt-4 shadow-lg overflow-hidden transition-all duration-300 animate-fadeIn">
+            <div class="bg-blue-500 text-white p-1 flex justify-between items-center">
+                <span class="font-bold">Chatbot</span>
+                <button id="close-chat" class="text-white hover:text-gray-200 focus:outline-none">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-3 space-y-3" style="max-height: 300px;">
+                <!-- Messages will be dynamically added here -->
+            </div>
+
+            <div class="border-t border-gray-200 dark:border-gray-700 p-3">
+                <form id="chat-form" class="flex items-center">
+                    <input id="chat-input" type="text" placeholder="Ask me anything..." class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 dark:text-white dark:bg-gray-700" required>
+                    <button type="submit" class="ml-2 bg-blue-500 text-white px-3 py-2 rounded-lg hover:bg-blue-600">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
     <script>
         // Dark mode toggle functionality
         var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
@@ -385,6 +413,77 @@ $task_result = $task_stmt->get_result();
                 });
             }
         }
+
+        // Chatbot functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatButton = document.getElementById('chat-button');
+            const chatInterface = document.getElementById('chat-interface');
+            const closeChat = document.getElementById('close-chat');
+            const chatForm = document.getElementById('chat-form');
+            const chatInput = document.getElementById('chat-input');
+            const chatMessages = document.getElementById('chat-messages');
+
+            // Toggle chat interface
+            chatButton.addEventListener('click', function() {
+                chatInterface.classList.toggle('hidden');
+            });
+
+            // Close chat interface
+            closeChat.addEventListener('click', function() {
+                chatInterface.classList.add('hidden');
+            });
+
+            // Handle form submission
+            chatForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const question = chatInput.value.trim();
+                if (!question) return;
+
+                // Add user message
+                const userMessage = document.createElement('div');
+                userMessage.className = 'bg-blue-500 text-white p-2 rounded-lg mb-2';
+                userMessage.textContent = question;
+                chatMessages.appendChild(userMessage);
+
+                // Clear input
+                chatInput.value = '';
+
+                // Add loading message
+                const loadingMessage = document.createElement('div');
+                loadingMessage.className = 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white p-2 rounded-lg mb-2';
+                loadingMessage.textContent = 'Loading...';
+                chatMessages.appendChild(loadingMessage);
+
+                try {
+                    const response = await fetch('../api/chatbot.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: `question=${encodeURIComponent(question)}`
+                    });
+
+                    const data = await response.json();
+
+                    // Remove loading message
+                    chatMessages.removeChild(loadingMessage);
+
+                    // Add bot response
+                    const botMessage = document.createElement('div');
+                    botMessage.className = 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white p-2 rounded-lg mb-2';
+                    botMessage.textContent = data.answer || "Sorry, I couldn't understand that.";
+                    chatMessages.appendChild(botMessage);
+                } catch (error) {
+                    console.error('Error:', error);
+                    chatMessages.removeChild(loadingMessage);
+                    const errorMessage = document.createElement('div');
+                    errorMessage.className = 'bg-red-500 text-white p-2 rounded-lg mb-2';
+                    errorMessage.textContent = 'An error occurred. Please try again later.';
+                    chatMessages.appendChild(errorMessage);
+                }
+
+                // Scroll to the bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            });
+        });
     </script>
 </body>
 </html>
